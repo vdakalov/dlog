@@ -1,10 +1,10 @@
 // Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library log.test;
+library DLog.test;
 
 import 'package:unittest/unittest.dart';
-import 'package:DLog/log.dart';
+import 'package:DLog/DLog.dart';
 
 gen(int rows, int cols, List target) {
   cols = rows * cols;

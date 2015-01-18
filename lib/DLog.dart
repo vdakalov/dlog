@@ -1,4 +1,4 @@
-library Log;
+library DLog;
 
 part "src/Symbols.dart";
 

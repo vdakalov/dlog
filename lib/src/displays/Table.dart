@@ -1,4 +1,4 @@
-part of Log;
+part of DLog;
 
 class Table<C, R> extends _Display {
 
@@ -7,7 +7,6 @@ class Table<C, R> extends _Display {
   int _currentRow = 3;
   int _currentColumn = 4;
 
-  @deprecated
   final List<C> columns = new List<C>();
   final List<R> data = new List<R>();
 
@@ -15,7 +14,6 @@ class Table<C, R> extends _Display {
 
   Table(this.size);
 
-  @deprecated
   Table.fromHeader(List<C> columns_) {
     if (columns_ is List<C>) {
       columns.addAll(columns_);
