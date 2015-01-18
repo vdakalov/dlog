@@ -1,27 +1,25 @@
 part of Log;
 
-const _BUFFER_OUTPUT = 0;
-const _BUFFER_COLUMNS_WIDTH = 1;
-const _BUFFER_TABLE_WIDTH = 2;
-const _BUFFER_CURRENT_ROW = 3;
-const _BUFFER_CURRENT_COLUMN = 4;
-const _BUFFER_TIME_INIT = 5;
-const _BUFFER_TIME_TABLE = 6;
-const _BUFFER_TIME_ROWS = 7;
-const _BUFFER_TIME_ALL = 8;
+class Table<C, R> extends _Display {
 
-class Table<C, R> {
+  List<int> _columnsWidth = new List<int>();
+  int _tableWidth = 2;
+  int _currentRow = 3;
+  int _currentColumn = 4;
 
+  @deprecated
   final List<C> columns = new List<C>();
   final List<R> data = new List<R>();
-  final Map<int, dynamic> _buffers = new Map<int, dynamic>();
 
   int size;
-  bool verbose = false;
 
-  Table.fromCollumns(List<C> columns_) {
+  Table(this.size);
+
+  @deprecated
+  Table.fromHeader(List<C> columns_) {
     if (columns_ is List<C>) {
       columns.addAll(columns_);
+      size = columns.length;
     }
   }
 
@@ -31,10 +29,18 @@ class Table<C, R> {
     }
   }
 
-  void _initBuffers() {
+  _initBuffer() {
 
     List<int> sizes = new List<int>();
     int totalWidth = 0;
+
+    if (columns.length > 0) {
+      size = columns.length;
+    }
+
+    if (size == null) {
+      return "Log (Table): Specify the number of columns (property size)";
+    }
 
     for (int i = 0; i < columns.length; i++) {
       String value = columns[i].toString();
@@ -63,156 +69,147 @@ class Table<C, R> {
 
     sizes.forEach((size){ totalWidth += size; });
 
-    _buffers[_BUFFER_OUTPUT] = new List<String>();
-    _buffers[_BUFFER_COLUMNS_WIDTH] = sizes;
-    _buffers[_BUFFER_TABLE_WIDTH] = totalWidth;
-  }
+    _columnsWidth = sizes;
+    _tableWidth = totalWidth;
 
-  void _bufferOutputAdd(String char, {int num: 1}) {
-    for (; num > 0; num--) {
-      _buffers[_BUFFER_OUTPUT].add(char);
+    _tableBegin();
+    _tableHeader();
+
+    int len = data.length;
+    data.length = data.length - (data.length % size);
+
+    for (int i = 0; i < data.length; i += size) {
+      if (data.length >= i + size) {
+        _currentRow = i;
+        _tableRow(data.sublist(i, i + size));
+        if (i + size < data.length) {
+          _tableRowSeparator();
+        }
+      }
     }
-  }
 
-  void _bufferOutputAddLn(String char, {int num: 1}) {
-    _bufferOutputAdd(char, num: num);
-    _bufferOutputEOL();
-  }
+    _tableEnd();
 
-  void _bufferOutputEOL() {
-    _bufferOutputAdd(Symbols.CL);
   }
 
   void _tableCell(String cell) {
-    int width = _buffers[_BUFFER_COLUMNS_WIDTH][_buffers[_BUFFER_CURRENT_COLUMN]];
+    int width = _columnsWidth[_currentColumn];
 
-    _bufferOutputAdd(cell);
-    _bufferOutputAdd(Symbols.space, num: width - cell.length);
+    _outputBufferWrite(cell);
+    _outputBufferWrite(Symbols.space, num: width - cell.length);
   }
 
   void _tableBegin() {
 
-    _bufferOutputAdd(Symbols.singleLineAngleTopLeft);
+    _outputBufferWrite(Symbols.singleLineAngleTopLeft);
 
-    for (int i = 0; i < _buffers[_BUFFER_COLUMNS_WIDTH].length; i++) {
+    for (int i = 0; i < _columnsWidth.length; i++) {
       if (i > 0) {
-        _bufferOutputAdd(Symbols.singleLineFromBottom);
+        _outputBufferWrite(Symbols.singleLineFromBottom);
       }
-      _bufferOutputAdd(
+      _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _buffers[_BUFFER_COLUMNS_WIDTH][i] + 2);
+          num: _columnsWidth[i] + 2);
     }
-    _bufferOutputAddLn(Symbols.singleLineAngleTopRight);
+    _outputBufferWriteLn(Symbols.singleLineAngleTopRight);
   }
 
   void _tableEnd() {
 
-    _bufferOutputAdd(Symbols.singleLineAngleBottomLeft);
+    _outputBufferWrite(Symbols.singleLineAngleBottomLeft);
 
-    for (int i = 0; i < _buffers[_BUFFER_COLUMNS_WIDTH].length; i++) {
+    for (int i = 0; i < _columnsWidth.length; i++) {
       if (i > 0) {
-        _bufferOutputAdd(Symbols.singleLineFromTop);
+        _outputBufferWrite(Symbols.singleLineFromTop);
       }
-      _bufferOutputAdd(
+      _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _buffers[_BUFFER_COLUMNS_WIDTH][i] + 2);
+          num: _columnsWidth[i] + 2);
     }
-    _bufferOutputAddLn(Symbols.singleLineAngleBottomRight);
+    _outputBufferWriteLn(Symbols.singleLineAngleBottomRight);
   }
 
   void _tableHeader() {
-    _bufferOutputAdd(Symbols.singleLineVertical);
-    _bufferOutputAdd(Symbols.space);
+
+    if (columns.length == 0) {
+      return ;
+    }
+
+    _outputBufferWrite(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
 
     for (int i = 0; i < columns.length; i++) {
-      _buffers[_BUFFER_CURRENT_COLUMN] = i;
+      _currentColumn = i;
       _tableCell(columns[i].toString().toUpperCase());
       if (columns.last != columns[i]) {
         _tableHeaderCellSeparator();
       }
     }
 
-    _bufferOutputAdd(Symbols.space);
-    _bufferOutputAddLn(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
+    _outputBufferWriteLn(Symbols.singleLineVertical);
 
     _tableHeaderSeparator();
   }
 
   void _tableHeaderSeparator() {
 
-    _bufferOutputAdd(Symbols.singleLineFromRight);
+    _outputBufferWrite(Symbols.singleLineFromRight);
 
-    for (int i = 0; i < _buffers[_BUFFER_COLUMNS_WIDTH].length; i++) {
+    for (int i = 0; i < _columnsWidth.length; i++) {
       if (i > 0) {
-        _bufferOutputAdd(Symbols.singleLineCross);
+        _outputBufferWrite(Symbols.singleLineCross);
       }
-      _bufferOutputAdd(
+      _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _buffers[_BUFFER_COLUMNS_WIDTH][i] + 2);
+          num: _columnsWidth[i] + 2);
     }
 
-    _bufferOutputAddLn(Symbols.singleLineFromLeft);
+    _outputBufferWriteLn(Symbols.singleLineFromLeft);
   }
 
   void _tableHeaderCellSeparator() {
-    _bufferOutputAdd(Symbols.space);
-    _bufferOutputAdd(Symbols.singleLineVertical);
-    _bufferOutputAdd(Symbols.space);
+    _outputBufferWrite(Symbols.space);
+    _outputBufferWrite(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
   }
 
   void _tableCellSeparator() {
-    _bufferOutputAdd(Symbols.space);
-    _bufferOutputAdd(Symbols.singleLineVertical);
-    _bufferOutputAdd(Symbols.space);
+    _outputBufferWrite(Symbols.space);
+    _outputBufferWrite(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
   }
 
   void _tableRow(List<R> row) {
-    _bufferOutputAdd(Symbols.singleLineVertical);
-    _bufferOutputAdd(Symbols.space);
+    _outputBufferWrite(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
 
     for (int i = 0; i < row.length; i++) {
-      _buffers[_BUFFER_CURRENT_COLUMN] = i;
+      _currentColumn = i;
       _tableCell(row[i].toString());
       if (row.last != row[i]) {
         _tableCellSeparator();
       }
     }
 
-    _bufferOutputAdd(Symbols.space);
-    _bufferOutputAddLn(Symbols.singleLineVertical);
+    _outputBufferWrite(Symbols.space);
+    _outputBufferWriteLn(Symbols.singleLineVertical);
   }
 
   void _tableRowSeparator() {
 
-    _bufferOutputAdd(Symbols.singleLineFromRight);
+    _outputBufferWrite(Symbols.singleLineFromRight);
 
-    for (int i = 0; i < _buffers[_BUFFER_COLUMNS_WIDTH].length; i++) {
+    for (int i = 0; i < _columnsWidth.length; i++) {
       if (i > 0) {
-        _bufferOutputAdd(Symbols.singleLineCross);
+        _outputBufferWrite(Symbols.singleLineCross);
       }
-      _bufferOutputAdd(
+      _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _buffers[_BUFFER_COLUMNS_WIDTH][i] + 2);
+          num: _columnsWidth[i] + 2);
     }
 
-    _bufferOutputAddLn(Symbols.singleLineFromLeft);
-  }
-
-  void _timeStart(int index) {
-    _buffers[index] = new DateTime.now();
-  }
-
-  void _timeEnd(int index) {
-    _buffers[index] = new DateTime.now().difference(_buffers[index]);
-  }
-
-  void _additionalInfo() {
-    _bufferOutputAddLn("render time:");
-    _bufferOutputAddLn(" - all: ${_buffers[_BUFFER_TIME_ALL].inMilliseconds}ms");
-    _bufferOutputAddLn(" - init: ${_buffers[_BUFFER_TIME_INIT].inMilliseconds}ms");
-    _bufferOutputAddLn(" - table: ${(_buffers[_BUFFER_TIME_TABLE] - _buffers[_BUFFER_TIME_ROWS]).inMilliseconds}ms");
-    _bufferOutputAddLn(" - rows: ${_buffers[_BUFFER_TIME_ROWS].inMilliseconds}ms");
-    _bufferOutputAddLn(" - row: ${_buffers[_BUFFER_TIME_ROWS].inMilliseconds/(data.length/size)}ms");
+    _outputBufferWriteLn(Symbols.singleLineFromLeft);
   }
 
   Table crop(int startRow, int numRow) {
@@ -230,67 +227,6 @@ class Table<C, R> {
 
   Table clone() {
     return new Table.fromData(size, data);
-  }
-
-  String toString() {
-
-    if (verbose) {
-      _timeStart(_BUFFER_TIME_ALL);
-      _timeStart(_BUFFER_TIME_INIT);
-    }
-
-    if (size == null) {
-      if (columns.length > 0) {
-        size = columns.length;
-      } else {
-        return "Log (Table): Укажите количество колонок (свойство size)";
-      }
-    }
-
-    _initBuffers();
-
-    if (verbose) {
-      _timeEnd(_BUFFER_TIME_INIT);
-      _timeStart(_BUFFER_TIME_TABLE);
-    }
-
-    _tableBegin();
-    _tableHeader();
-
-    int len = data.length;
-    data.length = data.length - (data.length % size);
-
-    if (verbose) {
-      _timeStart(_BUFFER_TIME_ROWS);
-    }
-
-    for (int i = 0; i < data.length; i += size) {
-      if (data.length >= i + size) {
-        _buffers[_BUFFER_CURRENT_ROW] = i;
-        _tableRow(data.sublist(i, i + size));
-        if (i + size < data.length) {
-          _tableRowSeparator();
-        }
-      }
-    }
-
-    if (verbose) {
-      _timeEnd(_BUFFER_TIME_ROWS);
-    }
-
-    _tableEnd();
-
-    if (verbose) {
-      _timeEnd(_BUFFER_TIME_TABLE);
-      _timeEnd(_BUFFER_TIME_ALL);
-    }
-
-    if (verbose) {
-      _bufferOutputAddLn("redundant cells: ${len - data.length}");
-      _additionalInfo();
-    }
-
-    return _buffers[_BUFFER_OUTPUT].join();
   }
 
 }
