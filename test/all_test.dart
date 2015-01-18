@@ -4,7 +4,7 @@
 library log.test;
 
 import 'package:unittest/unittest.dart';
-import 'package:log/log.dart';
+import 'package:DLog/log.dart';
 
 gen(int rows, int cols, List target) {
   cols = rows * cols;

@@ -3,7 +3,7 @@
 
 library log.example;
 
-import 'package:log/log.dart' as Log;
+import 'package:DLog/log.dart' as DLog;
 
 gen(int rows, int cols, List target) {
   cols = rows * cols;
@@ -23,7 +23,7 @@ main() {
   };
 
   // create table without header (3 column)
-  var debugNames = new Log.Table(2);
+  var debugNames = new DLog.Table(2);
 
   // specity header (optional)
   // this number of overwrite what was specified in the constructor,
@@ -42,7 +42,7 @@ main() {
   // output for debugging :)
   print(debugNames);
 
-  Log.Table t1 = new Log.Table(3);
+  DLog.Table t1 = new DLog.Table(3);
   t1.columns.addAll(["1","2","3"]);
   gen(10, 3, t1.data);
   print(t1);
