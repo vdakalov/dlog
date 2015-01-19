@@ -192,7 +192,7 @@ class Table<C, R> extends _Display {
     for (int i = 0; i < row.length; i++) {
       _currentColumn = i;
       _tableCell(row[i].toString());
-      if (row.last != row[i]) {
+      if (i < row.length - 1) {
         _tableCellSeparator();
       }
     }
