@@ -11,6 +11,32 @@ double rad(num deg) =>
 
 main() {
 
+  var tree = new DLog.Tree<double>();
+
+  Math.Random rand = new Math.Random();
+  int groups = 0;
+  tree.openGroup();
+
+  for (int i = 0; i < 30; i++) {
+
+    if (rand.nextBool()) {
+      groups++;
+      tree.openGroup();
+    }
+
+    tree.add(rand.nextDouble());
+
+    if (groups > 0 && rand.nextBool()) {
+      tree.closeGroup();
+    }
+  }
+
+  tree.closeGroup();
+
+  print(tree);
+
+  return ;
+
   // create new table and specify number of columns
   var debug = new DLog.Table.fromHeader(
               ["DEG°", "RADIAN", "NORMAL"]);
