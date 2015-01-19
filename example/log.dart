@@ -3,48 +3,40 @@
 
 library dlog.example;
 
+import "dart:math" as Math;
 import 'package:dlog/dlog.dart' as DLog;
+
+double rad(num deg) =>
+  deg * (Math.PI / 180);
 
 main() {
 
-  var someData = {
-    "Vasya": 21,
-    "Vanya": 27,
-    "Nikolay": 30
-  };
+  // create new table and specify number of columns
+  var debug = new DLog.Table.fromHeader(
+              ["DEG°", "RADIAN", "NORMAL"]);
 
-  // create table without header (3 column)
-  var debugNames = new DLog.Table(2);
+  // add more header
+  debug.columns.addAll(["VECTOR (X, Y)"]);
 
-  // specity header (optional)
-  // this number of overwrite what was specified in the constructor,
-  // and vice versa
-  debugNames.columns.addAll(["#", "name", "chars", "age"]);
+  for (int angle = 0; angle < 360; angle++) {
+    double x = 1 * Math.cos(rad(angle)),
+           y = 1 * Math.sin(rad(angle)),
+           normal = 1.0 * x + 0.0 * y;
 
-  // set data
-  int index = 1;
-  someData.forEach((name, age){
-    // the number of times specified in constructor or columns
-    // the remainder will be skipped
-    // > numSkipped = data.length % (columns.length|size)
-    debugNames.data.addAll([index++, name, name.length, age]);
-  });
+    // add row (count of cell eq debug.columns.length)
+    debug.data.addAll([angle, rad(angle), normal, [x,y]]);
+  }
 
-  // output for debugging :)
-  print(debugNames);
+  var pi = debug.clone().crop(0, 180),
+      pi2 = debug.clone().crop(180, 180);
 
-  // Dartium (win8-64 i5 3.4GHz/8Gb): 50000 rows and 4 column = ~315ms
-  // (output in the console will be slower)
+  // output to console
+  print(debug);
 
-//  ┌───┬─────────┬───────┬─────┐
-//  │ # │ NAME    │ CHARS │ AGE │
-//  ├───┼─────────┼───────┼─────┤
-//  │ 1 │ Vasya   │ 5     │ 21  │
-//  ├───┼─────────┼───────┼─────┤
-//  │ 2 │ Vanya   │ 5     │ 27  │
-//  ├───┼─────────┼───────┼─────┤
-//  │ 3 │ Nikolay │ 7     │ 30  │
-//  └───┴─────────┴───────┴─────┘
+  // output range 0-179
+  print(pi);
 
+  // output range 180-359
+  print(pi2);
 
 }

@@ -6,13 +6,20 @@ class Table<C, R> extends _Display {
   int _tableWidth = 2;
   int _currentRow = 3;
   int _currentColumn = 4;
+  int _size = 0;
 
   final List<C> columns = new List<C>();
   final List<R> data = new List<R>();
 
-  int size;
+  int get size => columns.length > 0 ? columns.length : _size;
+  void set size(int num) {
+    _size = num;
+    if (columns.length > num) {
+      columns.length = num;
+    }
+  }
 
-  Table(this.size);
+  Table(this._size);
 
   Table.fromHeader(List<C> columns_) {
     if (columns_ is List<C>) {
@@ -21,7 +28,7 @@ class Table<C, R> extends _Display {
     }
   }
 
-  Table.fromData(this.size, List<R> rows_) {
+  Table.fromData(this._size, List<R> rows_) {
     if (rows_ is List<R>) {
       data.addAll(rows_);
     }
@@ -224,7 +231,10 @@ class Table<C, R> extends _Display {
   }
 
   Table clone() {
-    return new Table.fromData(size, data);
+    var clone = new Table(0);
+    clone.columns.addAll(columns);
+    clone.data.addAll(data);
+    return clone;
   }
 
 }
