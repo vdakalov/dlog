@@ -5,15 +5,6 @@ library dlog.example;
 
 import 'package:dlog/dlog.dart' as DLog;
 
-gen(int rows, int cols, List target) {
-  cols = rows * cols;
-  while (rows-- > 0) {
-    while (cols-- > 0) {
-      target.add("$rows-$cols");
-    }
-  }
-}
-
 main() {
 
   var someData = {
@@ -42,12 +33,7 @@ main() {
   // output for debugging :)
   print(debugNames);
 
-  DLog.Table t1 = new DLog.Table(3);
-  t1.columns.addAll(["1","2","3"]);
-  gen(10, 3, t1.data);
-  print(t1);
-
-  // Dartium (win8-64 i5 34GHz/8Gb): 50000 rows and 4 column = ~315ms
+  // Dartium (win8-64 i5 3.4GHz/8Gb): 50000 rows and 4 column = ~315ms
   // (output in the console will be slower)
 
 //  ┌───┬─────────┬───────┬─────┐
