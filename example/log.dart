@@ -11,47 +11,31 @@ double rad(num deg) =>
 
 main() {
 
-  var tree = new DLog.Tree<double>();
-
-  Math.Random rand = new Math.Random();
-  int groups = 0;
-  tree.openGroup();
-
-  for (int i = 0; i < 30; i++) {
-
-    if (rand.nextBool()) {
-      groups++;
-      tree.add(rand.nextDouble());
-      tree.openGroup();
-    } else {
-      tree.add(rand.nextDouble());
-    }
-
-    if (groups > 0 && rand.nextBool()) {
-      tree.closeGroup();
-    }
-  }
-
-  tree.closeGroup();
+  var tree = new DLog.Tree<int>(title: "Simple tree [int only]")
+      ..openGroup()
+        ..add(1)
+        ..openGroup()
+          ..add(11)
+          ..add(12)
+          ..openGroup()
+            ..add(121)
+          ..closeGroup()
+          ..add(13)
+        ..closeGroup()
+      ..closeGroup();
 
   print(tree);
 
-  return ;
-
   // create new table and specify number of columns
-  var debug = new DLog.Table.fromHeader(
-              ["DEG°", "RADIAN", "NORMAL"]);
+  var debug = new DLog.Table.fromHeader(["DEG°"]);
 
   // add more header
-  debug.columns.addAll(["VECTOR (X, Y)"]);
+  debug.columns.addAll(["RADIAN"]);
 
   for (int angle = 0; angle < 360; angle++) {
-    double x = 1 * Math.cos(rad(angle)),
-           y = 1 * Math.sin(rad(angle)),
-           normal = 1.0 * x + 0.0 * y;
 
     // add row (count of cell eq debug.columns.length)
-    debug.data.addAll([angle, rad(angle), normal, [x,y]]);
+    debug.data.addAll([angle, rad(angle)]);
   }
 
   var pi = debug.clone().crop(0, 180),
@@ -61,9 +45,9 @@ main() {
   print(debug);
 
   // output range 0-179
-  print(pi);
+//  print(pi);
 
   // output range 180-359
-  print(pi2);
+//  print(pi2);
 
 }
