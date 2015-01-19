@@ -45,9 +45,9 @@ main() {
   print(debug);
 
   // output range 0-179
-//  print(pi);
+  print(pi);
 
   // output range 180-359
-//  print(pi2);
+  print(pi2);
 
 }
