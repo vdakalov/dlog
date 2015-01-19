@@ -1,4 +1,4 @@
-part of DLog;
+part of dlog;
 
 class Table<C, R> extends _Display {
 

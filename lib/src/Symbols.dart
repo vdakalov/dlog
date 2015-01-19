@@ -1,4 +1,4 @@
-part of DLog;
+part of dlog;
 
 class Symbols {
   static const String LF = "\u000A";

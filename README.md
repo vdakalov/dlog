@@ -6,7 +6,7 @@ A useful library for output structured information of debugging into console
 
 A simple usage example:
 
-    import 'package:DLog/log.dart' as DLog;
+    import 'package:dlog/dlog.dart' as DLog;
 
     main() {
       

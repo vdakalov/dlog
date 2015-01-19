@@ -1,4 +1,4 @@
-part of DLog;
+part of dlog;
 
 abstract class _Display {
 

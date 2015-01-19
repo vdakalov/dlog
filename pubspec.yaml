@@ -1,6 +1,10 @@
-name: DLog
+name: dlog
 version: 0.0.1
-author: Viktor Dakalov
+author: Viktor Dakalov <atlantidu@gmail.com>
 description: A useful library for output structured information of debugging into console
+homepage: https://github.com/vdakalov/DLog
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+documentation: https://github.com/vdakalov/DLog
 dev_dependencies:
   unittest: any

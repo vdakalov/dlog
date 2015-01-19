@@ -1,9 +1,9 @@
 // Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library DLog.example;
+library dlog.example;
 
-import 'package:DLog/DLog.dart' as DLog;
+import 'package:dlog/dlog.dart' as DLog;
 
 gen(int rows, int cols, List target) {
   cols = rows * cols;
