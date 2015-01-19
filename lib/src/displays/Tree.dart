@@ -69,9 +69,10 @@ class Tree<E> extends _Display {
   @override
   _initBuffer() {
 
-    _outputBufferWriteLn("Tree output:");
+    if (title is String) {
+      _outputBufferWriteLn(title);
+    }
     _group(_stack.sublist(1));
-    _outputBufferWriteLn("");
 
   }
 }

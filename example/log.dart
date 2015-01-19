@@ -21,10 +21,11 @@ main() {
 
     if (rand.nextBool()) {
       groups++;
+      tree.add(rand.nextDouble());
       tree.openGroup();
+    } else {
+      tree.add(rand.nextDouble());
     }
-
-    tree.add(rand.nextDouble());
 
     if (groups > 0 && rand.nextBool()) {
       tree.closeGroup();
