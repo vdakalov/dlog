@@ -24,7 +24,7 @@ class Json extends _Display {
     reflect(some).type.reflectedType.toString();
 
   _outputDepth() {
-    _outputBufferWrite(Symbols.space, num: _depth);
+    _outputBufferWrite(Symbols.space, _depth);
   }
 
   _outputItem(dynamic item) {
