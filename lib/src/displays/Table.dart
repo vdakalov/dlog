@@ -101,7 +101,7 @@ class Table<C, R> extends _Display {
     int width = _columnsWidth[_currentColumn];
 
     _outputBufferWrite(cell);
-    _outputBufferWrite(Symbols.space, num: width - cell.length);
+    _outputBufferWrite(Symbols.space, width - cell.length);
   }
 
   void _tableBegin() {
@@ -114,7 +114,7 @@ class Table<C, R> extends _Display {
       }
       _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _columnsWidth[i] + 2);
+          _columnsWidth[i] + 2);
     }
     _outputBufferWriteLn(Symbols.singleLineAngleTopRight);
   }
@@ -129,7 +129,7 @@ class Table<C, R> extends _Display {
       }
       _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _columnsWidth[i] + 2);
+          _columnsWidth[i] + 2);
     }
     _outputBufferWriteLn(Symbols.singleLineAngleBottomRight);
   }
@@ -167,7 +167,7 @@ class Table<C, R> extends _Display {
       }
       _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _columnsWidth[i] + 2);
+          _columnsWidth[i] + 2);
     }
 
     _outputBufferWriteLn(Symbols.singleLineFromLeft);
@@ -211,7 +211,7 @@ class Table<C, R> extends _Display {
       }
       _outputBufferWrite(
           Symbols.singleLineHorizontal,
-          num: _columnsWidth[i] + 2);
+          _columnsWidth[i] + 2);
     }
 
     _outputBufferWriteLn(Symbols.singleLineFromLeft);
