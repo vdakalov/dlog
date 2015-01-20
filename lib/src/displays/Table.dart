@@ -231,7 +231,7 @@ class Table<C, R> extends _Display {
   }
 
   Table clone() {
-    var clone = new Table(0);
+    var clone = new Table(size);
     clone.columns.addAll(columns);
     clone.data.addAll(data);
     return clone;
