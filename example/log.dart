@@ -4,7 +4,7 @@
 library dlog.example;
 
 import "dart:math" as Math;
-import 'package:dlog/dlog.dart' as DLog;
+import 'package:dlog/dlog.dart' as dlog;
 
 double rad(num deg) =>
   deg * (Math.PI / 180);
@@ -24,7 +24,7 @@ List<Map> users = [
 
 main() {
 
-  var users_tree = new DLog.Tree("Users");
+  var users_tree = new dlog.Tree("Users");
 
   users_tree.openGroup();
 
@@ -40,7 +40,7 @@ main() {
 //  users_tree.closeGroup();
   print(users_tree..closeGroup());
 
-  var tree = new DLog.Tree<int>("Simple tree [int only]")
+  var tree = new dlog.Tree<int>("Simple tree [int only]")
 
       // open main group
       ..openGroup()
@@ -65,7 +65,7 @@ main() {
   print(tree);
 
   // create new table and specify the column number
-  var table = new DLog.Table(1);
+  var table = new dlog.Table(1);
 
   // you can add header names (optional)
   // in this case the number of columns is changed to 3

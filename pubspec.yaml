@@ -1,5 +1,5 @@
 name: dlog
-version: 0.0.2
+version: 0.0.3
 author: Viktor Dakalov <atlantidu@gmail.com>
 description: A useful library for output structured information of debugging into console
 homepage: https://github.com/vdakalov/DLog

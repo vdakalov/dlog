@@ -11,4 +11,5 @@
 
 ## 0.0.3
 
-- Fix condition for cell separator 
+- Fix condition for cell separator
+- Implements output information as tree
