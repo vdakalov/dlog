@@ -9,7 +9,7 @@ class Tree<E> extends _Display {
 
   String title;
 
-  Tree({this.title: "Tree output:"});
+  Tree([this.title]);
 
   add(E text) {
     _stack.last.add(_items.length);
