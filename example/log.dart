@@ -9,40 +9,88 @@ import 'package:dlog/dlog.dart' as DLog;
 double rad(num deg) =>
   deg * (Math.PI / 180);
 
+List<Map> users = [
+  {
+    "name": "Dmitry",
+    "age": 23,
+    "city": "Yekaterinburg"
+  },
+  {
+    "name": "Vasya",
+    "age": 28,
+    "city": "Moskow"
+  }
+];
+
 main() {
 
-  var tree = new DLog.Tree<int>(title: "Simple tree [int only]")
+  var users_tree = new DLog.Tree("Users");
+
+  users_tree.openGroup();
+
+  for (int i = 0; i < users.length; i++) {
+    users_tree..add(users[i]["name"])
+              ..openGroup()
+              ..add("age: ${users[i]["age"]}")
+              ..add("city: ${users[i]["city"]}")
+              ..closeGroup()
+              ;
+  }
+
+//  users_tree.closeGroup();
+  print(users_tree..closeGroup());
+
+  var tree = new DLog.Tree<int>("Simple tree [int only]")
+
+      // open main group
       ..openGroup()
+        // add item
         ..add(1)
+        // title for this group is previous item
         ..openGroup()
+          // sub items for item "1"
           ..add(11)
           ..add(12)
           ..openGroup()
             ..add(121)
+          // clone group
           ..closeGroup()
           ..add(13)
         ..closeGroup()
-      ..closeGroup();
+      // close main group
+      ..closeGroup()
+      ;
 
+  // output tree
   print(tree);
 
-  // create new table and specify number of columns
-  var debug = new DLog.Table.fromHeader(["DEG°"]);
+  // create new table and specify the column number
+  var table = new DLog.Table(1);
 
-  // add more header
-  debug.columns.addAll(["RADIAN"]);
+  // you can add header names (optional)
+  // in this case the number of columns is changed to 3
+  table.columns.add("deg°");
+  table.columns.addAll(["radian", "vector (x, y)"]);
 
   for (int angle = 0; angle < 360; angle++) {
 
-    // add row (count of cell eq debug.columns.length)
-    debug.data.addAll([angle, rad(angle)]);
+    String x = (1 * Math.sin(angle)).toStringAsFixed(4),
+           y = (1 * Math.cos(angle)).toStringAsFixed(4);
+
+    // add row (number of cell equal columns number)
+    table.data.addAll([
+      angle,       // deg°
+      rad(angle),  // radian
+      [x, y]       // vector (x, y)
+    ]);
   }
 
-  var pi = debug.clone().crop(0, 180),
-      pi2 = debug.clone().crop(180, 180);
+  // cut part of table
+  var pi = table.clone().crop(0, 180),
+      pi2 = table.clone().crop(180, 180);
 
   // output to console
-  print(debug);
+  print(table);
 
   // output range 0-179
   print(pi);
