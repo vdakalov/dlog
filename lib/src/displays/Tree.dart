@@ -46,7 +46,7 @@ class Tree<E> extends _Display {
 
       } else {
 
-        _outputBufferWrite(Symbols.singleLineVertical + Symbols.space, num: _depth);
+        _outputBufferWrite(Symbols.singleLineVertical + Symbols.space, _depth);
 
         if (last) {
           _outputBufferWrite(Symbols.singleLineAngleBottomLeft);
@@ -54,7 +54,7 @@ class Tree<E> extends _Display {
           _outputBufferWrite(Symbols.singleLineFromRight);
         }
 
-        _outputBufferWrite(Symbols.space, num: 1);
+        _outputBufferWrite(Symbols.space);
         _outputBufferWriteLn(_items[item].toString());
       }
     });
