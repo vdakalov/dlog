@@ -1,14 +1,14 @@
+// Copyright (c) 2015, Viktor Dakalov. All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be found in the LICENSE file.
 
-library dlog.example;
-
-import "package:unittest/unittest.dart";
-import "package:dlog/dlog.dart" as DLog;
+import 'package:unittest/unittest.dart';
+import 'package:dlog/dlog.dart';
 
 main() {
 
   test("Tree flat", (){
 
-    var tree = new DLog.Tree("Tree flat");
+    var tree = new Tree("Tree flat");
     var output = [
       'Tree flat',
       '│ ├ 0',
@@ -36,7 +36,7 @@ main() {
 
   test("Tree 3x3", (){
 
-    var tree = new DLog.Tree("Tree 3x3");
+    var tree = new Tree("Tree 3x3");
     var output = [
       'Tree 3x3\n'
       '│ ├ 0\n'
