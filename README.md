@@ -133,7 +133,7 @@ Result:
       
       // clone root group and output in console
       print(tree..closeGroup());
-   }
+    }
 
 Result
 
