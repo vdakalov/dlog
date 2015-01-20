@@ -4,7 +4,7 @@ A useful library for output structured information of debugging into console
 
 ## Usage
 
-The information can be structured as a table or a tree
+The information can be structured as a table, tree or json
 
 ### Table
 
@@ -115,23 +115,24 @@ Result:
       tree.openGroup();
       
       for (int i = 0; i < users.length; i++) {
-      tree
-          // add name
-          ..add(users[i]["name"])
-          
-          // open user group (previous element is the name of the group following)
-          ..openGroup()
-          
-          // subitems
-          ..add("age: ${users[i]["age"]}")
-          ..add("city: ${users[i]["city"]}")
-          
-          // close user group
-          ..closeGroup()
-          ;
+          tree
+              // add name
+              ..add(users[i]["name"])
+              
+              // open user group
+              // (previous element is the name of the group following)
+              ..openGroup()
+              
+              // subitems
+              ..add("age: ${users[i]["age"]}")
+              ..add("city: ${users[i]["city"]}")
+              
+              // close user group
+              ..closeGroup()
+              ;
       }
       
-      // clone root group and output in console
+      // close root group and output in console
       print(tree..closeGroup());
     }
 
@@ -144,6 +145,78 @@ Result
     │ ├ Alexandr
     │ │ ├ age: 28
     │ │ └ city: Moskow
+
+### Json
+
+    // create Json object and specify title and data
+    var json = new dlog.Json(
+      title: "My",
+      data: new List()
+    );
+    
+    // change data and title
+    json.data = getJSON();
+    json.title += " json";
+    
+    // max length for string
+    json.maxStringLen = 50;
+    
+    // custom data parsers (custom parsers for List, Map and String types will be ignored)
+    json.parsers["int"] = (int num) => "$num <-- int";
+    
+    // output
+    print(json);
+
+Result
+
+    My json
+    [
+      0: {
+        _id: "54bde2ec6d0c45fe2aad89a1",
+        index: 0 <-- int,
+        guid: "391ad3b0-e003-44fe-8f52-9a53b0d2ce52",
+        isActive: true,
+        balance: "$3,385.54",
+        picture: "http://placehold.it/32x32",
+        age: 25 <-- int,
+        eyeColor: "blue",
+        name: "Burns Avery",
+        gender: "male",
+        company: "COMTRAIL",
+        email: "burnsavery@comtrail.com",
+        phone: "+1 (829) 415-3400",
+        address: "496 Hemlock Street, Hegins, New Mexico, 4698",
+        about: "Qui ex labore irure proident aute veniam sit minim...",
+        registered: "2014-09-19T00:05:13 -05:00",
+        latitude: -2.302439,
+        longitude: 92.194414,
+        tags: [
+          0: "commodo",
+          1: "eu",
+          2: "deserunt",
+          3: "quis",
+          4: "dolor",
+          5: "nulla",
+          6: "ad"
+        ],
+        friends: [
+          0: {
+            id: 0 <-- int,
+            name: "Katheryn Rogers"
+          },
+          1: {
+            id: 1 <-- int,
+            name: "Corine Smith"
+          },
+          2: {
+            id: 2 <-- int,
+            name: "Jacobson Christensen"
+          }
+        ],
+        greeting: "Hello, Burns Avery! You have 3 unread messages.",
+        favoriteFruit: "strawberry"
+      }
+    ]
 
 ## Features and bugs
 

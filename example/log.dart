@@ -91,8 +91,8 @@ main() {
   json.data = getJSON();
   json.title += " json";
 
-  // max length for string
-  json.maxStringLen = 80;
+  // max length for string (set null for output full string)
+  json.maxStringLen = 50;
 
   // custom data parsers (custom parsers for List, Map and String types will be ignored)
   json.parsers["int"] = (int num) => "$num <-- int";

@@ -13,3 +13,8 @@
 
 - Fix condition for cell separator
 - Implements output information as tree
+
+## 0.0.4
+
+- Implements output information as json
+- Some fixes
