@@ -4,6 +4,8 @@ abstract class _Display {
 
   final List<String> _outputBuffer = new List<String>();
 
+  bool flush = true;
+
   String endOfLineUnicode = Symbols.LF;
 
   _outputBufferWrite(String char, [num]) {
@@ -22,6 +24,11 @@ abstract class _Display {
   _initBuffer();
 
   toString() {
+
+    if (flush) {
+      _outputBuffer.clear();
+    }
+
     _initBuffer();
     return _outputBuffer.join();
   }

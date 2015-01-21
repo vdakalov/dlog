@@ -100,6 +100,9 @@ main() {
   // output
   print(json);
 
+  json.flush = true;
+  json.maxStringLen = 10;
+  print(json);
 
   /**************************************
    * Tree
