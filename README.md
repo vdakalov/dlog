@@ -257,6 +257,7 @@ Opportunity to detect run-time function
       // and after completion
       debug.checkEnd("complex random");
     
+      // same as above
       debug.checkFunc("sleep function", sleep);
     
       debug.checkFunc("check power speed", (){
