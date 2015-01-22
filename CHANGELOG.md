@@ -18,3 +18,7 @@
 
 - Implements output information as json
 - Some fixes
+
+## 0.0.5
+
+- Added flush buffer before each output
