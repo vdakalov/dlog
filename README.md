@@ -4,7 +4,7 @@ A useful library for output structured information of debugging into console
 
 ## Usage
 
-The information can be structured as a table, tree or json
+The information can be structured as a table, tree or json. So it is possible to measure the performance of a function or piece of code.
 
 ### Table
 
@@ -49,7 +49,6 @@ The information can be structured as a table, tree or json
         
         // output range 180-359
         print(pi2);
-    
     }
 
 Result:
@@ -147,25 +146,35 @@ Result
     │ │ └ city: Moskow
 
 ### Json
+    
+    import "package:dlog/dlog.dart" as dlog;
+    import "dart:convert";
+    
+    main() {
+    
+      // create Json object and
+      var debug = new dlog.Json(
+          title: "My",
+          data: new List()
+      );
+    
+      debug.data = getJSON();
+      debug.title += " json";
+    
+      // max length for string (set null for output full string)
+      debug.maxStringLen = 50;
+    
+      // custom data parsers (custom parsers for List, Map and String types will be ignored)
+      debug.parsers["int"] = (int num) => "$num <-- int";
 
-    // create Json object and specify title and data
-    var json = new dlog.Json(
-      title: "My",
-      data: new List()
-    );
+      // no clear buffer [by default: true]
+      debug.flush = false;
     
-    // change data and title
-    json.data = getJSON();
-    json.title += " json";
+      // output
+      print(debug);
     
-    // max length for string
-    json.maxStringLen = 50;
+    }
     
-    // custom data parsers (custom parsers for List, Map and String types will be ignored)
-    json.parsers["int"] = (int num) => "$num <-- int";
-    
-    // output
-    print(json);
 
 Result
 
@@ -217,6 +226,60 @@ Result
         favoriteFruit: "strawberry"
       }
     ]
+
+### Additional fetature
+
+Opportunity to detect run-time function
+
+    import "dart:math";
+    import "package:dlog/dlog.dart" as dlog;
+    
+    sleep() {
+      DateTime init = new DateTime.now();
+      int ms = 1500;
+      while (ms > new DateTime.now().difference(init).inMilliseconds);
+    }
+    
+    main() {
+    
+      // create Time object and specity descrption
+      var debug = new dlog.Time("Time test for power function");
+    
+      // call check before a separate logical operation
+      debug.checkBegin("complex random");
+    
+      // some logic
+      int len = 1000;
+      while (len-- > 0) {
+        sqrt(pow(new Random().nextDouble(), new Random().nextDouble()) * new Random().nextDouble());
+      }
+    
+      // and after completion
+      debug.checkEnd("complex random");
+    
+      debug.checkFunc("sleep function", sleep);
+    
+      debug.checkFunc("check power speed", (){
+        for (int i = 0; i < 100000; i++) {
+          pow(i, 100);
+        }
+      });
+    
+      // output
+      print(debug);
+    
+    }
+
+Result
+
+    ────────────────────────────────────────────────
+     Time test for power function
+    ─────┬────────────────┬─────────────────────────
+     1   │ 0:00:00.014000 │ complex random
+     2   │ 0:00:01.500000 │ sleep function
+     3   │ 0:00:00.414000 │ check power speed
+    ─────┴────────────────┴─────────────────────────
+
 
 ## Features and bugs
 
