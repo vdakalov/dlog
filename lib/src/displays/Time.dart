@@ -27,6 +27,11 @@ class Time extends _Display {
     _registerAction(description);
   }
 
+  checkLoopFunc(String description, num count, Function doit) {
+    while (count-- > 0) { doit(); }
+    _registerAction(description);
+  }
+
   @override
   _initBuffer() {
 

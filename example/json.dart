@@ -61,30 +61,27 @@ getJSON() {
 
 main() {
 
-  /**************************************
-   * Json
-   */
-
   // create Json object and
-  var json = new dlog.Json(
+  var debug = new dlog.Json(
       title: "My",
       data: new List()
   );
 
-  json.data = getJSON();
-  json.title += " json";
+  debug.data = getJSON();
+  debug.title += " json";
 
   // max length for string (set null for output full string)
-  json.maxStringLen = 50;
+  debug.maxStringLen = 50;
 
   // custom data parsers (custom parsers for List, Map and String types will be ignored)
-  json.parsers["int"] = (int num) => "$num <-- int";
+  debug.parsers["int"] = (int num) => "$num <-- int";
 
   // output
-  print(json);
+  print(debug);
 
-  json.flush = true;
-  json.maxStringLen = 10;
-  print(json);
+  // no clear buffer [by default: true]
+  debug.flush = false;
+  debug.maxStringLen = 10;
+  print(debug);
 
 }
