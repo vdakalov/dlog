@@ -6,33 +6,37 @@ library dlog.example.time;
 import "dart:math";
 import "package:dlog/dlog.dart" as dlog;
 
-// a function that is performed for a long time
-power() {
-  int len = 1000;
-  while (len-- > 0) {
-    sqrt(pow(new Random().nextDouble(), new Random().nextDouble()));
-  }
-}
-
-power2() {
-  power();
-}
-
-power3() {
-  power();
+sleep() {
+  DateTime init = new DateTime.now();
+  int ms = 1500;
+  while (ms > new DateTime.now().difference(init).inMilliseconds);
 }
 
 main() {
 
   // create Time object and specity descrption
   // object can be used throughout the application
-  var debug = new dlog.Time("Cycle")..init();
+  var debug = new dlog.Time("Time test for power function");
 
-  // call check after separated logic operation
-  debug.checkFunc("once call power", power);
+  // call check before a separate logical operation
+  debug.checkBegin("complex random");
 
-  // call power several times
-  debug.checkLoopFunc("call power in loop 10", 10, power3);
+  // some logic
+  int len = 1000;
+  while (len-- > 0) {
+    sqrt(pow(new Random().nextDouble(), new Random().nextDouble()) * new Random().nextDouble());
+  }
+
+  // and after completion
+  debug.checkEnd("complex random");
+
+  debug.checkFunc("sleep function", sleep);
+
+  debug.checkFunc("check power speed", (){
+    for (int i = 0; i < 100000; i++) {
+      pow(i, 100);
+    }
+  });
 
   // output
   print(debug);
