@@ -20,11 +20,11 @@ List<Map> users = [
 
 main() {
 
-  var users_tree = new dlog.Tree("Users");
-  users_tree.openGroup();
+  var debug = new dlog.Tree("Users");
+  debug.openGroup();
 
   for (int i = 0; i < users.length; i++) {
-    users_tree..add(users[i]["name"])
+    debug..add(users[i]["name"])
               ..openGroup()
               ..add("age: ${users[i]["age"]}")
               ..add("city: ${users[i]["city"]}")
@@ -32,7 +32,6 @@ main() {
               ;
   }
 
-  // users_tree.closeGroup();
-  print(users_tree..closeGroup());
+  print(debug..closeGroup());
 
 }

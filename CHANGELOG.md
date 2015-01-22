@@ -22,3 +22,4 @@
 ## 0.0.5
 
 - Added flush buffer before each output
+- Implements Timer
